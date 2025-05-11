@@ -67,7 +67,7 @@ _ROBOT_POS_OFFSETS: dict[str, list[float]] = {
     "G1": [0, -0.33, 0],
     "G1FixedLowerBody": [0, -0.33, 0],
     "GoogleRobot": [0, 0, 0],
-    "HSR": [0, -0.5, 0.2],
+    "HSR": [0, -0.5, 0.2    ],
 }
 
 
@@ -299,6 +299,13 @@ class Kitchen(ManipulationEnv, metaclass=KitchenEnvMeta):
                 controller_configs, robots[0], arms
             )
             if robots[0] == "PandaOmron":
+                if "composite_controller_specific_configs" not in controller_configs:
+                    controller_configs["composite_controller_specific_configs"] = {}
+                controller_configs["composite_controller_specific_configs"][
+                    "body_part_ordering"
+                ] = ["right", "right_gripper", "base", "torso"]
+
+            if robots[0] == 'HSR':
                 if "composite_controller_specific_configs" not in controller_configs:
                     controller_configs["composite_controller_specific_configs"] = {}
                 controller_configs["composite_controller_specific_configs"][

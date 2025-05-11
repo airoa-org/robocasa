@@ -117,6 +117,7 @@ def collect_human_trajectory(
 
         # Get the newest action
         input_ac_dict = device.input2action(mirror_actions=mirror_actions)
+        print(input_ac_dict)
 
         # If action is none, then this a reset so we should break
         if input_ac_dict is None:
@@ -151,6 +152,7 @@ def collect_human_trajectory(
         env_action[device.active_robot] = active_robot.create_action_vector(action_dict)
         env_action = np.concatenate(env_action)
 
+        # print(env_action[6:])
         # Run environment step
         obs, _, _, _ = env.step(env_action)
         if render:
@@ -360,18 +362,18 @@ if __name__ == "__main__":
         "--device",
         type=str,
         default="spacemouse",
-        choices=["keyboard", "keyboardmobile", "spacemouse", "dummy"],
+        choices=["keyboard", "keyboardmobile", "spacemouse", "dummy", 'dualshock'],
     )
     parser.add_argument(
         "--pos-sensitivity",
         type=float,
-        default=4.0,
+        default=1.0,
         help="How much to scale position user inputs",
     )
     parser.add_argument(
         "--rot-sensitivity",
         type=float,
-        default=4.0,
+        default=1.0,
         help="How much to scale rotation user inputs",
     )
 
@@ -485,6 +487,15 @@ if __name__ == "__main__":
             env=env,
             pos_sensitivity=args.pos_sensitivity,
             rot_sensitivity=args.rot_sensitivity,
+        )
+    elif args.device == "dualshock":
+        from robosuite.devices import DualShock
+
+        device = DualShock(
+            env=env,
+            pos_sensitivity=args.pos_sensitivity,
+            rot_sensitivity=args.rot_sensitivity,
+            reverse_xy=True,
         )
     elif args.device == "spacemouse":
         from robosuite.devices import SpaceMouse
