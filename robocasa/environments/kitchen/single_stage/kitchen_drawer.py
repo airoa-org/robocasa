@@ -71,7 +71,7 @@ class ManipulateDrawer(Kitchen):
         robot_base_pos, robot_base_ori, side = inits[random_index]
         self.drawer_side = side
         robot_model.set_base_xpos(robot_base_pos)
-        robot_model.set_base_ori(robot_base_ori)
+        #robot_model.set_base_ori(robot_base_ori)
 
     def _reset_internal(self):
         """
